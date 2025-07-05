@@ -1,59 +1,34 @@
-// Get references to the essential HTML elements
 const inputBox = document.getElementById("input-box");
 const listContainer = document.getElementById("list-container");
 
-// Function to add a new task to the list
 function addTask() {
-    // Check if the input box is empty
     if (inputBox.value === '') {
         alert("You must write something!");
     } else {
-        // Create a new list item element
         let li = document.createElement("li");
-        // Set its text content to the input value
         li.textContent = inputBox.value;
-        // Append the new list item to the list container
         listContainer.appendChild(li);
-
-        // Create the delete (X) button
         let span = document.createElement("span");
-        span.textContent = "\u00d7"; // This is the 'x' character
-        // Append the delete button to the list item
+        span.textContent = "\u00d7"; 
         li.appendChild(span);
     }
-    // Clear the input box after adding the task
     inputBox.value = "";
-    // Save the updated list to local storage
     saveData();
 }
-
-// Add an event listener to the list container for clicks
 listContainer.addEventListener("click", function(e) {
-    // If the clicked element is an LI (a task item)
     if (e.target.tagName === "LI") {
-        // Toggle the 'checked' class to mark/unmark as complete
         e.target.classList.toggle("checked");
-        // Save the updated list to local storage
         saveData();
     }
-    // If the clicked element is a SPAN (the 'x' button)
     else if (e.target.tagName === "SPAN") {
-        // Remove the parent element of the span, which is the LI (the task)
         e.target.parentElement.remove();
-        // Save the updated list to local storage
         saveData();
     }
 }, false);
-
-// Function to save the current state of the list to the browser's local storage
 function saveData() {
     localStorage.setItem("data", listContainer.innerHTML);
 }
-
-// Function to load and display the tasks from local storage when the page loads
 function showTasks() {
     listContainer.innerHTML = localStorage.getItem("data");
 }
-
-// Call showTasks() to load any saved data as soon as the page is opened
 showTasks();
